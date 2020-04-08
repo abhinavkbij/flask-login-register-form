@@ -2,7 +2,8 @@ from flask import Flask,render_template,flash, redirect,url_for,session,logging,
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////Users/bozkurt/Desktop/login-register-form/database.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////Users/abhinavbj/Documents/gcp/tests/flask-login-register-form/database.db'
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 db = SQLAlchemy(app)
 
 
@@ -20,14 +21,17 @@ def index():
 
 @app.route("/login",methods=["GET", "POST"])
 def login():
+    error = None
     if request.method == "POST":
         uname = request.form["uname"]
         passw = request.form["passw"]
-        
         login = user.query.filter_by(username=uname, password=passw).first()
         if login is not None:
+            flash('You were successfully logged in!')
             return redirect(url_for("index"))
-    return render_template("login.html")
+        else:
+            error = 'Invalid Credentials!'
+    return render_template("login.html",error=error)
 
 @app.route("/register", methods=["GET", "POST"])
 def register():

@@ -16,6 +16,9 @@
     <div class="container">
         <div class="row" style="margin-top: 40px">
             <div class="col-sm-6">
+                {% if error %}
+                    <p class=error><strong>Error:</strong> {{ error }}
+                {% endif %}
                 <form method="POST">
                     <div class="form-group">
                       <label for="email">Username : </label>
